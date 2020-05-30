@@ -39,6 +39,13 @@ class CoronaCanvas extends JPanel {
     setSize(width = w, height = h);
     rows = r;
     cols = c;
+    for (int init1=0; init1<10; init1++)
+    {
+    for (int init2=0; init2<10; init2++)
+    {
+        Ilabel[init1][init2] = new JLabel("INIT");
+    }
+    }
   }//Ввод данных
 @Override
 public void paintComponent (Graphics g)
@@ -68,20 +75,20 @@ public class main extends JFrame{
     CoronaCanvas xyz = new CoronaCanvas(50, 50, 10, 10);
     emu cemu = new emu();
     xyz.setLayout(null);
-    for (int rei1=0; rei1<xyz.InfectState.length;rei1++)
-    {
-        for (int rei2=0; rei2<xyz.InfectState[rei1].length;rei2++){
-        xyz.InfectState[rei1][rei2]="H";
-        xyz.add(xyz.Ilabel[rei1][rei2]);
-        xyz.Ilabel[rei1][rei2].setText(xyz.InfectState[rei1][rei2]);
-        }
-    }
     xyz.InfectState[0][0]="I";
     xyz.Ilabel[0][0].setText(xyz.InfectState[0][0]);
-    cemu.init();    
+    cemu.init();     
     int time = 15;
     cemu.emulate(time);
     add(xyz);
+    //for (int rei1=0; rei1<xyz.InfectState.length;rei1++)
+    //{
+    //    for (int rei2=0; rei2<xyz.InfectState[rei1].length;rei2++){
+    //    xyz.Ilabel[rei1][rei2].setText("H");
+    //    add(xyz.Ilabel[rei1][rei2]);
+    //    xyz.Ilabel[rei1][rei2].setLocation(12+rei1*50, 12+rei2*50);
+    //    }
+    //-}
     pack();
     while (cemu.stillruns==true)
     {
