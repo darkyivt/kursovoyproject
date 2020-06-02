@@ -9,8 +9,6 @@ package mainpackage;
  *
  * @author Alex
  */
-import java.util.Timer;
-import java.util.TimerTask;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.event.*;
@@ -18,41 +16,24 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
+import javax.swing.Timer;
 import java.awt.*;
 import java.util.Random;
 
-class CoronaCanvas extends JPanel {
-    //JLabel nope;
-    //BufferedImage boom;
-  int width, height;
-
-  int rows;
-
-  int cols;
-  
-  int i1, i2;
-  
-  String InfectState[][] = new String [10][10];
-  
-  JLabel Ilabel[][] = new JLabel[10][10];
-  CoronaCanvas(int w, int h, int r, int c) {
-    setSize(width = w, height = h);
-    rows = r;
-    cols = c;
-    for (int init1=0; init1<10; init1++)
-    {
-    for (int init2=0; init2<10; init2++)
-    {
-        Ilabel[init1][init2] = new JLabel("INIT");
-    }
-    }
-  }//Ввод данных
-@Override
-public void paintComponent (Graphics g)
+class main extends JPanel {
+JLabel view;
+BufferedImage surface;
+int rows=10, cols=10, width=50, height=50;
+public main()
 {
-    g.setColor(Color.BLUE);
-    g.fillRect(0,0,640,800);
-int i1, i2, i3;
+    emu cemu = new emu();
+    surface = new BufferedImage(800,800, BufferedImage.TYPE_INT_RGB);
+    view = new JLabel(new ImageIcon(surface));
+    Graphics g = surface.getGraphics();
+    g.setColor(Color.WHITE);
+    g.fillRect(0, 0, 800, 800);
+    int i1, i2, i3;
+    cemu.init();
 for (i3=0; i3<rows; i3++)
 {
 g.setColor(Color.BLACK);
@@ -63,56 +44,56 @@ for (i1=0; i1<rows; i1++)
 {
     for (i2=0; i2<cols; i2++)
     {
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
+        if(cemu.IsInfected[i1][i2]==true)
+        {
+        g.setColor(Color.RED);
+        }
+        g.fillRect(i1*50, i2*50, width/2, height/2);
+    }
+}
+ActionListener listener = new ActionListener() {
+            public void actionPerformed(ActionEvent ae) {
+                cemu.emulate();
+                redrawthisshit(cemu.IsInfected);
+            }
+        };
+Timer timer = new Timer(2500, listener);
+        timer.start();
+}
+public void redrawthisshit(boolean checker[][])
+{
+    Graphics g = surface.getGraphics();
+    int i1, i2;
+for (i1=0; i1<checker.length; i1++)
+{
+    for (i2=0; i2<checker[i1].length; i2++)
+    {
+        if(checker[i1][i2]==false)
+        {
+        g.setColor(Color.BLACK);
+        //System.out.println("The cell #" + i1 + i2 + "is safe.");
+        }
+        if(checker[i1][i2]==true)
+        {
+        g.setColor(Color.RED);
+        //System.out.println("The cell #" + i1 + i2 + "is aggressive!"); //A bit of testing code with an outdated meme in it. 
+        }
         g.fillRect(i1*50, i2*50, width/2, height/2);
     }
     }
 }
-}
-
-public class main extends JFrame{
-  public main() {
-    CoronaCanvas xyz = new CoronaCanvas(50, 50, 10, 10);
-    emu cemu = new emu();
-    xyz.setLayout(null);
-    xyz.InfectState[0][0]="I";
-    xyz.Ilabel[0][0].setText(xyz.InfectState[0][0]);
-    cemu.init();     
-    int time = 15;
-    cemu.emulate(time);
-    add(xyz);
-    //for (int rei1=0; rei1<xyz.InfectState.length;rei1++)
-    //{
-    //    for (int rei2=0; rei2<xyz.InfectState[rei1].length;rei2++){
-    //    xyz.Ilabel[rei1][rei2].setText("H");
-    //    add(xyz.Ilabel[rei1][rei2]);
-    //    xyz.Ilabel[rei1][rei2].setLocation(12+rei1*50, 12+rei2*50);
-    //    }
-    //-}
-    pack();
-    while (cemu.stillruns==true)
+public static void main(String[] args)
     {
-        for(int id1=0; id1<cemu.IsInfected.length;id1++){
-        for(int id2=0; id2<cemu.IsInfected[id1].length; id2++)
-        {
-            if (cemu.IsInfected[id1][id2]==false)
-            {
-            xyz.InfectState[id1][id2]="H";
-            }
-            if (cemu.IsInfected[id1][id2]==true)
-            {
-            xyz.InfectState[id1][id2]="I";;
-            }
-            System.out.print("Node's current state: ");
-            System.out.println(xyz.InfectState[id1][id2]);
-        }
-        }
-        xyz.repaint();
+        
+        main canvas = new main();
+        JFrame frame = new JFrame();
+        frame.setSize(640, 480);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setContentPane(canvas.view);
+        frame.pack();
+        frame.setLocationByPlatform(true);
+        frame.setVisible(true);
     }
-  }
-
-  public static void main(String[] a) {
-    new main().setVisible(true);
-    
-  } //Без этого Maven начисто отказался работать по неизвестным мне причинам. 
 }
+
