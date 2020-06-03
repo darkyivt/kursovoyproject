@@ -27,11 +27,11 @@ int rows=10, cols=10, width=50, height=50;
 public main()
 {
     emu cemu = new emu();
-    surface = new BufferedImage(800,800, BufferedImage.TYPE_INT_RGB);
+    surface = new BufferedImage(800,640, BufferedImage.TYPE_INT_RGB);
     view = new JLabel(new ImageIcon(surface));
     Graphics g = surface.getGraphics();
     g.setColor(Color.WHITE);
-    g.fillRect(0, 0, 800, 800);
+    g.fillRect(0, 0, 800, 640);
     int i1, i2, i3;
     cemu.init();
 for (i3=0; i3<rows; i3++)

@@ -26,25 +26,25 @@ public class emu {
     IsInfected[0][9]=true;//Задаём нулевых пациентов. 
     IsInfected[9][0]=true;//Задаём нулевых пациентов. 
     IsInfected[9][9]=true;//Задаём нулевых пациентов. 
-    for (int i1=0; i1<IsInfected.length; i1++) // Mother of God, it's all testing code!
-        {
-            for (int i2=0; i2<IsInfected[i1].length; i2++)
-            {
-               if (IsInfected[i1][i2]==false)
-               {
+    //for (int i1=0; i1<IsInfected.length; i1++) // Mother of God, it's all testing code!
+        //{
+            //for (int i2=0; i2<IsInfected[i1].length; i2++)
+            //{
+               //if (IsInfected[i1][i2]==false)
+               //{
                //System.out.println("Initialized cell #" + i1 + i2 +" is healthy.");
-               }
-               if (IsInfected[i1][i2]==true)
-               {
+               //}
+               //if (IsInfected[i1][i2]==true)
+               //{
                //System.out.println("Initialized cell #" + i1 + i2 +" is infected.");
-               }
-            }
-        } // Someone, put this println-ing piece of shit out of it's misery...
+               //}
+            //}
+        //} // Someone, put this println-ing piece of shit out of it's misery...
                }
     void emulate(){
         int infectioncoefficient=0;
         java.util.Random rand=new java.util.Random();
-        double infectchance = 0.25;
+        double infectchance = 0.2;
         double infecttotal = 0;
         double curechance = 0.2;
         for (int i1=0; i1<IsInfected.length; i1++)
